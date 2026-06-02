@@ -5,6 +5,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, Button } from '@/components/ui';
 import { BasicInfoForm } from '@/features/projects/components/BasicInfoForm';
 import { FundingConfigForm } from '@/features/projects/components/FundingConfigForm';
+import { CampaignReviewForm } from '@/features/projects/components/CampaignReviewForm';
+import { CampaignPreviewCard } from '@/features/projects/components/CampaignPreviewCard';
+import { CampaignDeployForm } from '@/features/projects/components/CampaignDeployForm';
 import { SubmissionSuccessModal } from '@/components/projects/SubmissionSuccessModal';
 import { useDraftManager } from '@/hooks/useDraftManager';
 import {
@@ -14,6 +17,7 @@ import {
   ListTodo,
   Wallet,
   Eye,
+  Rocket,
   X,
   Save,
   Clock,
@@ -26,6 +30,7 @@ const STEPS = [
   { id: 'details', title: 'Details', icon: ListTodo },
   { id: 'funding', title: 'Funding', icon: Wallet },
   { id: 'review', title: 'Review', icon: Eye },
+  { id: 'deploy', title: 'Deploy', icon: Rocket },
 ];
 
 function formatLastSaved(date: Date): string {
@@ -47,6 +52,7 @@ export default function CreateProjectPage() {
   const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [showSuccess, setShowSuccess] = useState(false);
   const [submittedProjectId, setSubmittedProjectId] = useState<string | undefined>();
+  const [previewMode, setPreviewMode] = useState(false);
 
   // Load draft on mount
   useEffect(() => {
@@ -93,6 +99,11 @@ export default function CreateProjectPage() {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
 
+  const handleEditStep = (stepIndex: number) => {
+    setPreviewMode(false);
+    setCurrentStep(stepIndex);
+  };
+
   const handleExit = () => {
     const hasData = Object.keys(formData).length > 0;
     if (hasData && saveStatus !== 'saved') {
@@ -104,16 +115,16 @@ export default function CreateProjectPage() {
   };
 
   const handleSubmit = async () => {
-    // In a real app this would POST to the API.
-    const mockProjectId = `proj_${Date.now()}`;
-    setSubmittedProjectId(mockProjectId);
+    // Move to deploy step
+    setCurrentStep(4);
+  };
 
-    // Clean up the draft after successful submission
+  const handleDeploySuccess = (campaignId: string) => {
+    setSubmittedProjectId(campaignId);
+
+    // Clean up the draft after successful deployment
     if (draftIdParam) {
       deleteDraft(draftIdParam);
-    } else {
-      // Delete whichever draft was auto-created
-      saveDraft(formData, currentStep); // ensure it exists, then delete
     }
 
     setShowSuccess(true);
@@ -157,42 +168,27 @@ export default function CreateProjectPage() {
       case 3:
         return (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-center mb-4">Review Your Project</h2>
-            <Card className="p-6 bg-gray-50 border-dashed border-2 space-y-6">
-              <div>
-                <h3 className="text-sm font-semibold text-gray-700 mb-3">Basic Information</h3>
-                <div className="space-y-2">
-                  <p><strong>Title:</strong> {formData.title as string}</p>
-                  <p><strong>Category:</strong> {formData.category as string}</p>
-                  <p><strong>Description:</strong> {formData.description as string}</p>
-                  <p><strong>Location:</strong> {formData.location as string}</p>
-                </div>
-              </div>
-              <div className="border-t pt-4">
-                <h3 className="text-sm font-semibold text-gray-700 mb-3">Funding Configuration</h3>
-                <div className="space-y-2">
-                  <p><strong>Goal Amount:</strong> {formData.goalAmount as number}</p>
-                  <p><strong>Accepted Assets:</strong> {(formData.acceptedAssets as string[])?.join(', ')}</p>
-                  <p><strong>Campaign Duration:</strong> {formData.campaignDuration as number} days</p>
-                  {(formData.minimumDonation as number) && (
-                    <p><strong>Minimum Donation:</strong> {formData.minimumDonation as number}</p>
-                  )}
-                  <p><strong>Network:</strong> {formData.network as string}</p>
-                </div>
-              </div>
-            </Card>
-            <div className="flex justify-between pt-6">
-              <Button onClick={handleBack} variant="outline" className="flex items-center gap-2">
-                <ArrowLeft className="w-4 h-4" /> Back
-              </Button>
-              <Button
-                onClick={handleSubmit}
-                className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
-              >
-                <CheckCircle2 className="w-4 h-4" /> Submit Campaign
-              </Button>
-            </div>
+            {previewMode ? (
+              <CampaignPreviewCard formData={formData} />
+            ) : (
+              <CampaignReviewForm
+                formData={formData}
+                onEdit={handleEditStep}
+                onSubmit={handleSubmit}
+                onBack={handleBack}
+                isPreviewMode={previewMode}
+                onTogglePreview={() => setPreviewMode(!previewMode)}
+              />
+            )}
           </div>
+        );
+      case 4:
+        return (
+          <CampaignDeployForm
+            formData={formData}
+            onBack={handleBack}
+            onSuccess={handleDeploySuccess}
+          />
         );
       default:
         return null;
