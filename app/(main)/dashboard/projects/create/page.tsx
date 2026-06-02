@@ -4,6 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, Button } from '@/components/ui';
 import { BasicInfoForm } from '@/features/projects/components/BasicInfoForm';
+import { FundingConfigForm } from '@/features/projects/components/FundingConfigForm';
+import { CampaignReviewForm } from '@/features/projects/components/CampaignReviewForm';
+import { CampaignPreviewCard } from '@/features/projects/components/CampaignPreviewCard';
+import { CampaignDeployForm } from '@/features/projects/components/CampaignDeployForm';
 import { SubmissionSuccessModal } from '@/components/projects/SubmissionSuccessModal';
 import { useDraftManager } from '@/hooks/useDraftManager';
 import {
@@ -13,9 +17,11 @@ import {
   ListTodo,
   Wallet,
   Eye,
+  Rocket,
   X,
   Save,
   Clock,
+  CheckIcon,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -24,6 +30,7 @@ const STEPS = [
   { id: 'details', title: 'Details', icon: ListTodo },
   { id: 'funding', title: 'Funding', icon: Wallet },
   { id: 'review', title: 'Review', icon: Eye },
+  { id: 'deploy', title: 'Deploy', icon: Rocket },
 ];
 
 function formatLastSaved(date: Date): string {
@@ -45,6 +52,7 @@ export default function CreateProjectPage() {
   const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [showSuccess, setShowSuccess] = useState(false);
   const [submittedProjectId, setSubmittedProjectId] = useState<string | undefined>();
+  const [previewMode, setPreviewMode] = useState(false);
 
   // Load draft on mount
   useEffect(() => {
@@ -67,6 +75,16 @@ export default function CreateProjectPage() {
   // Stop auto-save timer on unmount
   useEffect(() => () => stopAutoSave(), [stopAutoSave]);
 
+  // Reset save status after 3 seconds
+  useEffect(() => {
+    if (saveStatus === 'saved') {
+      const timer = setTimeout(() => {
+        // Status will naturally reset on next save
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [saveStatus]);
+
   function handleManualSave() {
     saveDraft(formData, currentStep);
   }
@@ -81,6 +99,11 @@ export default function CreateProjectPage() {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
 
+  const handleEditStep = (stepIndex: number) => {
+    setPreviewMode(false);
+    setCurrentStep(stepIndex);
+  };
+
   const handleExit = () => {
     const hasData = Object.keys(formData).length > 0;
     if (hasData && saveStatus !== 'saved') {
@@ -92,16 +115,16 @@ export default function CreateProjectPage() {
   };
 
   const handleSubmit = async () => {
-    // In a real app this would POST to the API.
-    const mockProjectId = `proj_${Date.now()}`;
-    setSubmittedProjectId(mockProjectId);
+    // Move to deploy step
+    setCurrentStep(4);
+  };
 
-    // Clean up the draft after successful submission
+  const handleDeploySuccess = (campaignId: string) => {
+    setSubmittedProjectId(campaignId);
+
+    // Clean up the draft after successful deployment
     if (draftIdParam) {
       deleteDraft(draftIdParam);
-    } else {
-      // Delete whichever draft was auto-created
-      saveDraft(formData, currentStep); // ensure it exists, then delete
     }
 
     setShowSuccess(true);
@@ -136,46 +159,36 @@ export default function CreateProjectPage() {
         );
       case 2:
         return (
-          <div className="space-y-6">
-            <h2 className="text-xl font-semibold">Funding Goal</h2>
-            <p className="text-gray-500">Define your funding target and duration.</p>
-            <div className="flex justify-between pt-6">
-              <Button onClick={handleBack} variant="outline" className="flex items-center gap-2">
-                <ArrowLeft className="w-4 h-4" /> Back
-              </Button>
-              <Button
-                onClick={() => handleNext({ funding: 'Mock funding' })}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                Review Project
-              </Button>
-            </div>
-          </div>
+          <FundingConfigForm
+            initialData={formData as any}
+            onNext={handleNext}
+            onBack={handleBack}
+          />
         );
       case 3:
         return (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-center mb-4">Review Your Project</h2>
-            <Card className="p-6 bg-gray-50 border-dashed border-2">
-              <div className="space-y-4">
-                <p><strong>Title:</strong> {formData.title as string}</p>
-                <p><strong>Category:</strong> {formData.category as string}</p>
-                <p><strong>Description:</strong> {formData.description as string}</p>
-                <p><strong>Location:</strong> {formData.location as string}</p>
-              </div>
-            </Card>
-            <div className="flex justify-between pt-6">
-              <Button onClick={handleBack} variant="outline" className="flex items-center gap-2">
-                <ArrowLeft className="w-4 h-4" /> Back
-              </Button>
-              <Button
-                onClick={handleSubmit}
-                className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
-              >
-                <CheckCircle2 className="w-4 h-4" /> Submit Campaign
-              </Button>
-            </div>
+            {previewMode ? (
+              <CampaignPreviewCard formData={formData} />
+            ) : (
+              <CampaignReviewForm
+                formData={formData}
+                onEdit={handleEditStep}
+                onSubmit={handleSubmit}
+                onBack={handleBack}
+                isPreviewMode={previewMode}
+                onTogglePreview={() => setPreviewMode(!previewMode)}
+              />
+            )}
           </div>
+        );
+      case 4:
+        return (
+          <CampaignDeployForm
+            formData={formData}
+            onBack={handleBack}
+            onSuccess={handleDeploySuccess}
+          />
         );
       default:
         return null;
@@ -194,26 +207,40 @@ export default function CreateProjectPage() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            {/* Save Draft button + status */}
-            <div className="flex items-center gap-2">
-              {lastSaved && (
-                <span className="hidden sm:flex items-center gap-1 text-xs text-gray-400">
-                  <Clock className="w-3 h-3" />
-                  {formatLastSaved(lastSaved)}
-                </span>
-              )}
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleManualSave}
-                isLoading={saveStatus === 'saving'}
-                className="flex items-center gap-1.5 text-gray-600"
-                title="Save Draft"
-              >
-                <Save className="w-3.5 h-3.5" />
-                Save Draft
-              </Button>
-            </div>
+            {/* Draft Save Status Indicator */}
+            {lastSaved && (
+              <div className={`px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-medium transition-all ${
+                saveStatus === 'saving' 
+                  ? 'bg-blue-50 text-blue-600'
+                  : saveStatus === 'saved'
+                  ? 'bg-green-50 text-green-600'
+                  : 'bg-gray-50 text-gray-600'
+              }`}>
+                {saveStatus === 'saving' ? (
+                  <>
+                    <Clock className="w-3.5 h-3.5 animate-spin" />
+                    Saving...
+                  </>
+                ) : saveStatus === 'saved' ? (
+                  <>
+                    <CheckIcon className="w-3.5 h-3.5" />
+                    Draft saved {formatLastSaved(lastSaved)}
+                  </>
+                ) : null}
+              </div>
+            )}
+            {/* Save Draft button */}
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleManualSave}
+              isLoading={saveStatus === 'saving'}
+              className="flex items-center gap-1.5 text-gray-600"
+              title="Save Draft"
+            >
+              <Save className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Save</span>
+            </Button>
             <button
               onClick={handleExit}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-600"
