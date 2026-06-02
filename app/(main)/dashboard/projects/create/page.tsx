@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, Button } from '@/components/ui';
 import { BasicInfoForm } from '@/features/projects/components/BasicInfoForm';
+import { FundingConfigForm } from '@/features/projects/components/FundingConfigForm';
 import { SubmissionSuccessModal } from '@/components/projects/SubmissionSuccessModal';
 import { useDraftManager } from '@/hooks/useDraftManager';
 import {
@@ -147,32 +148,37 @@ export default function CreateProjectPage() {
         );
       case 2:
         return (
-          <div className="space-y-6">
-            <h2 className="text-xl font-semibold">Funding Goal</h2>
-            <p className="text-gray-500">Define your funding target and duration.</p>
-            <div className="flex justify-between pt-6">
-              <Button onClick={handleBack} variant="outline" className="flex items-center gap-2">
-                <ArrowLeft className="w-4 h-4" /> Back
-              </Button>
-              <Button
-                onClick={() => handleNext({ funding: 'Mock funding' })}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                Review Project
-              </Button>
-            </div>
-          </div>
+          <FundingConfigForm
+            initialData={formData as any}
+            onNext={handleNext}
+            onBack={handleBack}
+          />
         );
       case 3:
         return (
           <div className="space-y-6">
             <h2 className="text-xl font-semibold text-center mb-4">Review Your Project</h2>
-            <Card className="p-6 bg-gray-50 border-dashed border-2">
-              <div className="space-y-4">
-                <p><strong>Title:</strong> {formData.title as string}</p>
-                <p><strong>Category:</strong> {formData.category as string}</p>
-                <p><strong>Description:</strong> {formData.description as string}</p>
-                <p><strong>Location:</strong> {formData.location as string}</p>
+            <Card className="p-6 bg-gray-50 border-dashed border-2 space-y-6">
+              <div>
+                <h3 className="text-sm font-semibold text-gray-700 mb-3">Basic Information</h3>
+                <div className="space-y-2">
+                  <p><strong>Title:</strong> {formData.title as string}</p>
+                  <p><strong>Category:</strong> {formData.category as string}</p>
+                  <p><strong>Description:</strong> {formData.description as string}</p>
+                  <p><strong>Location:</strong> {formData.location as string}</p>
+                </div>
+              </div>
+              <div className="border-t pt-4">
+                <h3 className="text-sm font-semibold text-gray-700 mb-3">Funding Configuration</h3>
+                <div className="space-y-2">
+                  <p><strong>Goal Amount:</strong> {formData.goalAmount as number}</p>
+                  <p><strong>Accepted Assets:</strong> {(formData.acceptedAssets as string[])?.join(', ')}</p>
+                  <p><strong>Campaign Duration:</strong> {formData.campaignDuration as number} days</p>
+                  {(formData.minimumDonation as number) && (
+                    <p><strong>Minimum Donation:</strong> {formData.minimumDonation as number}</p>
+                  )}
+                  <p><strong>Network:</strong> {formData.network as string}</p>
+                </div>
               </div>
             </Card>
             <div className="flex justify-between pt-6">
