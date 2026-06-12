@@ -58,7 +58,7 @@ export const useBookmarkStore = create<BookmarkState>()(
       },
     }),
     {
-      name: 'stellar-aid-bookmarks',
+      name: 'orbitchain-bookmarks',
     }
   )
 );
