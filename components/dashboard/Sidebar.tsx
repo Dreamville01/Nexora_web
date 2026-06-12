@@ -69,7 +69,7 @@ export function Sidebar({
             <span className="text-white font-bold text-sm leading-none">S</span>
           </div>
           {!isCollapsed && (
-            <span className="text-white font-semibold text-base truncate">StellarAid</span>
+            <span className="text-white font-semibold text-base truncate">OrbitChain</span>
           )}
           {/* Mobile close button */}
           <button
