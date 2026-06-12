@@ -65,11 +65,11 @@ export default function LoginForm() {
 
       // "Remember me" — flag session-only mode when unchecked
       if (!data.rememberMe) {
-        sessionStorage.setItem("stellaraid-session-only", "true");
+        sessionStorage.setItem("orbitchain-session-only", "true");
       } else {
-        sessionStorage.removeItem("stellaraid-session-only");
+        sessionStorage.removeItem("orbitchain-session-only");
         const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000;
-        localStorage.setItem("stellaraid-session-expiry", String(expiry));
+        localStorage.setItem("orbitchain-session-expiry", String(expiry));
       }
 
       redirect();
@@ -106,7 +106,7 @@ export default function LoginForm() {
         <div className="w-9 h-9 rounded-lg bg-[#1a3a6b] flex items-center justify-center shrink-0">
           <span className="text-white font-bold text-base leading-none">S</span>
         </div>
-        <span className="text-lg font-semibold text-gray-900">StellarAid</span>
+        <span className="text-lg font-semibold text-gray-900">OrbitChain</span>
       </div>
 
       {/* Heading */}
