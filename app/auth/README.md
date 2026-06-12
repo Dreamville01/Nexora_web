@@ -2,7 +2,7 @@
 
 ## Password Reset Flow
 
-This document describes the complete password reset flow implemented in the StellarAid application.
+This document describes the complete password reset flow implemented in the OrbitChain application.
 
 ## Flow Overview
 
