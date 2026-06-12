@@ -145,7 +145,7 @@ export const CampaignCoverUpload = React.forwardRef<
         setUploadState((prev) => ({ ...prev, progress: 50 }));
 
         const response = await uploadToCloudinary(file, {
-          folder: 'stellaraid/campaigns',
+          folder: 'orbitchain/campaigns',
         });
 
         setUploadState((prev) => ({
