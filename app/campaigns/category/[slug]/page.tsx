@@ -17,11 +17,11 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const meta = CATEGORY_META[params.slug];
-  if (!meta) return { title: 'Category | StellarAid' };
+  if (!meta) return { title: 'Category | OrbitChain' };
   return {
-    title: `${meta.title} Campaigns | StellarAid`,
+    title: `${meta.title} Campaigns | OrbitChain`,
     description: meta.description,
-    openGraph: { title: `${meta.title} Campaigns | StellarAid`, description: meta.description },
+    openGraph: { title: `${meta.title} Campaigns | OrbitChain`, description: meta.description },
   };
 }
 
