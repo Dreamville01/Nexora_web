@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { Metadata } from 'next';
 import { projectsApi } from '@/lib/api/projects';
 import type { Project } from '@/types/api';
 import { RelatedCampaigns } from '@/components/campaigns/RelatedCampaigns';
@@ -11,39 +10,7 @@ const TABS = ['About', 'Milestones', 'Donors', 'Updates', 'Contract Info'] as co
 interface CampaignDetailPageProps {
   params: { id: string };
 }
-  const campaignTitle = `Campaign ${params.id}`;
-  const campaignDescription = 'Support meaningful campaigns on OrbitChain. View campaign details, milestones, and make a donation to help create positive impact.';
-  const canonicalUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://orbitchain.com'}/campaigns/${params.id}`;
 
-  return {
-    title: `${campaignTitle} | OrbitChain`,
-    description: campaignDescription,
-    canonical: canonicalUrl,
-    openGraph: {
-      title: campaignTitle,
-      description: campaignDescription,
-      url: canonicalUrl,
-      siteName: 'OrbitChain',
-      type: 'website',
-      images: [
-        {
-          url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://orbitchain.com'}/og-campaign.png`,
-          width: 1200,
-          height: 630,
-          alt: campaignTitle,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: campaignTitle,
-      description: campaignDescription,
-      images: [`${process.env.NEXT_PUBLIC_APP_URL || 'https://orbitchain.com'}/og-campaign.png`],
-      creator: '@OrbitChain',
-    },
-  };
-}
-const TABS = ['About', 'Milestones', 'Donors', 'Updates', 'Contract Info'] as const;
 export default function CampaignDetailPage({ params }: CampaignDetailPageProps) {
   const [campaign, setCampaign] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(true);
