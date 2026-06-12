@@ -72,7 +72,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-base leading-none">S</span>
+              <span className="text-primary-foreground font-bold text-base leading-none">O</span>
             </div>
             <span className="text-lg font-semibold text-foreground">OrbitChain</span>
           </Link>

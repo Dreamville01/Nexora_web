@@ -213,7 +213,7 @@ export default function ResetPasswordForm() {
       {/* Brand header */}
       <div className="flex items-center justify-center gap-2 mb-6">
         <div className="w-9 h-9 rounded-lg bg-[#1a3a6b] flex items-center justify-center shrink-0">
-          <span className="text-white font-bold text-base leading-none">S</span>
+          <span className="text-white font-bold text-base leading-none">O</span>
         </div>
         <span className="text-lg font-semibold text-gray-900">OrbitChain</span>
       </div>

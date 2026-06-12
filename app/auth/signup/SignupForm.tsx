@@ -107,7 +107,7 @@ const Signup = () => {
             <span
               style={{ color: "#fff", fontWeight: "700", fontSize: "18px" }}
             >
-              S
+              O
             </span>
           </div>
           <span
