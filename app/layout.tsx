@@ -8,7 +8,7 @@ import { SessionExpiredModal } from "@/components/SessionExpiredModal";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "StellarAid",
+  title: "OrbitChain",
   description: "Blockchain-based crowdfunding on the Stellar Network",
 };
 
