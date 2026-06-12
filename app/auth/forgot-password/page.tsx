@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
 export const metadata: Metadata = {
-  title: 'Forgot Password | StellarAid',
+  title: 'Forgot Password | OrbitChain',
   description:
-    'Reset your StellarAid password securely via email verification.',
+    'Reset your OrbitChain password securely via email verification.',
 };
 
 export default function ForgotPasswordPage() {
