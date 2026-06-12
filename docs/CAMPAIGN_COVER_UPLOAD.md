@@ -45,7 +45,7 @@ To get these values:
 1. In Cloudinary Dashboard, go to Settings → Upload
 2. Click "Add upload preset"
 3. Set Signing Mode to "Unsigned"
-4. Name it something like `stellaraid_campaigns`
+4. Name it something like `orbitchain_campaigns`
 5. Under Allowed transformations, enable all transformations
 6. Save and use the preset name in your environment variables
 
@@ -188,7 +188,7 @@ Delete an image from Cloudinary (server-side).
 **Request:**
 ```json
 {
-  "publicId": "stellaraid/campaigns/abc123"
+  "publicId": "orbitchain/campaigns/abc123"
 }
 ```
 
@@ -210,7 +210,7 @@ Upload image to Cloudinary with automatic transformations.
 import { uploadToCloudinary } from '@/lib/api/cloudinary';
 
 const response = await uploadToCloudinary(file, {
-  folder: 'stellaraid/campaigns',
+  folder: 'orbitchain/campaigns',
 });
 
 console.log(response.secure_url);

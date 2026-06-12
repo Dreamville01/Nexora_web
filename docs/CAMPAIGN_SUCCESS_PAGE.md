@@ -245,7 +245,7 @@ export async function generateMetadata({ params }: CampaignSuccessPageProps) {
   const campaign = await getProjectById(params.id);
   
   return {
-    title: `${campaign.title} | Campaign Deployed | StellarAid`,
+    title: `${campaign.title} | Campaign Deployed | OrbitChain`,
     description: `Your campaign "${campaign.title}" is now live! Share and track your fundraising journey.`,
   };
 }
