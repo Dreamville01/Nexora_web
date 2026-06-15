@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { FileBarChart, Users, Globe, DollarSign, Wallet, Search } from 'lucide-react';
 import { StatCard } from '@/components/ui/StatCard';
@@ -68,7 +68,7 @@ export default function AdminReportsPage() {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
-  const generateReport = () => {
+  const generateReport = useCallback(() => {
     setIsLoading(true);
     // Simulate API delay
     setTimeout(() => {
@@ -82,12 +82,12 @@ export default function AdminReportsPage() {
       setReportData(data);
       setIsLoading(false);
     }, 800);
-  };
+  }, [reportType]);
 
   // Initial report generation
   useEffect(() => {
     generateReport();
-  }, [reportType]);
+  }, [generateReport]);
 
   const columns = useMemo<ReportColumn[]>(() => {
     switch (reportType) {

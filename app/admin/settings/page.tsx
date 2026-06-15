@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Settings, ShieldCheck, History, Info } from 'lucide-react';
 import { apiClient } from '@/lib/api/client';
@@ -17,7 +17,7 @@ export default function AdminSettingsPage() {
   const [showConfirm, setShowConfirm] = useState(false);
   const toast = useToast();
 
-  const fetchSettings = async () => {
+  const fetchSettings = useCallback(async () => {
     setIsLoading(true);
     try {
       // In a real app: const res = await apiClient.get('/admin/settings');
@@ -37,11 +37,11 @@ export default function AdminSettingsPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [toast]);
 
   useEffect(() => {
     fetchSettings();
-  }, []);
+  }, [fetchSettings]);
 
   const handleFormSubmit = (data: PlatformSettings) => {
     setPendingSettings(data);

@@ -7,6 +7,7 @@ import React, {
   forwardRef,
   useEffect,
 } from 'react';
+import Image from 'next/image';
 import { clsx } from 'clsx';
 import { Upload, Trash2, AlertCircle, CheckCircle, X } from 'lucide-react';
 import {
@@ -263,10 +264,14 @@ export const ImageUpload = forwardRef<HTMLDivElement, ImageUploadProps>(
       [onRemove]
     );
 
+    // Keep a ref to the latest images for unmount cleanup
+    const latestImagesRef = useRef<UploadedImage[]>([]);
+    latestImagesRef.current = uploadedImages;
+
     // Cleanup previews on unmount
     useEffect(() => {
       return () => {
-        uploadedImages.forEach((img) => {
+        latestImagesRef.current.forEach((img) => {
           revokeImagePreview(img.preview);
         });
       };
@@ -391,10 +396,12 @@ const ImagePreviewCard: React.FC<ImagePreviewCardProps> = ({
       {/* Image Container */}
       <div className="relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden aspect-square">
         {!imageError ? (
-          <img
+          <Image
             src={image.preview}
             alt="Preview"
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            unoptimized
             onError={() => setImageError(true)}
           />
         ) : (

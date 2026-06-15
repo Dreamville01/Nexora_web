@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
 import { Bell, Pencil, Trash2, Plus } from 'lucide-react';
 import { useNotificationStore } from '@/store';
 import { updatesApi } from '@/lib/api/updates';
@@ -208,7 +209,7 @@ export function UpdateTimeline({ campaignId }: UpdateTimelineProps) {
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {imageUrls.map((url) => (
                 <div key={url} className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white">
-                  <img src={url} alt="Update preview" loading="lazy" className="h-28 w-full object-cover" />
+                  <Image src={url} alt="Update preview" width={0} height={0} sizes="100vw" className="h-28 w-full object-cover" unoptimized />
                   <button
                     type="button"
                     onClick={() => handleRemoveImage(url)}
@@ -297,12 +298,15 @@ export function UpdateTimeline({ campaignId }: UpdateTimelineProps) {
                   {update.imageUrls?.length ? (
                     <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                       {update.imageUrls.map((url) => (
-                        <img
+                        <Image
                           key={url}
                           src={url}
                           alt={update.title}
-                          loading="lazy"
+                          width={0}
+                          height={0}
+                          sizes="100vw"
                           className="h-40 w-full rounded-3xl object-cover border border-slate-200"
+                          unoptimized
                         />
                       ))}
                     </div>

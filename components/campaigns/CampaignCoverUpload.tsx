@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useRef, useState } from 'react';
+import Image from 'next/image';
 import { Upload, X, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { clsx } from 'clsx';
 import {
@@ -248,10 +249,12 @@ export const CampaignCoverUpload = React.forwardRef<
         {/* Preview Image */}
         {uploadState.preview && (
           <div className="absolute inset-0 rounded-lg overflow-hidden">
-            <img
+            <Image
               src={uploadState.preview}
               alt="Upload preview"
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              unoptimized
             />
             <div className="absolute inset-0 bg-black bg-opacity-50" />
           </div>

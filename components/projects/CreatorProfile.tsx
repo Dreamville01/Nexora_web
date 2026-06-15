@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 
 interface CreatorProfileProps {
@@ -21,9 +22,11 @@ export function CreatorProfile({ creator }: CreatorProfileProps) {
   return (
     <div className="bg-white rounded-lg border p-6 space-y-4">
       <div className="flex items-center gap-4">
-        <img
+        <Image
           src={creator.avatar || '/default-avatar.png'}
           alt={creator.name}
+          width={64}
+          height={64}
           className="w-16 h-16 rounded-full"
         />
         <div>

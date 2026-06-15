@@ -8,6 +8,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { CampaignCoverUpload } from '@/components/campaigns/CampaignCoverUpload';
 import { useCampaignCoverUpload } from '@/hooks/useCampaignCoverUpload';
 
@@ -258,9 +259,11 @@ export function CampaignCreationForm() {
         {image?.url && (
           <div className="space-y-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
             <h3 className="font-semibold text-blue-900">Image Preview</h3>
-            <img
+            <Image
               src={image.url}
               alt="Campaign cover preview"
+              width={1200}
+              height={675}
               className="w-full h-64 object-cover rounded-lg"
             />
             <p className="text-sm text-blue-800">

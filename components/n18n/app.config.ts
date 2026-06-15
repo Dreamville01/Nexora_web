@@ -1,3 +1,5 @@
-export default () => ({
-  appName: process.env.APP_NAME,
-});
+export default function appConfig() {
+  return {
+    appName: process.env.APP_NAME,
+  };
+}

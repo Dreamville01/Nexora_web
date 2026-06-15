@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { CampaignCoverUpload } from '@/components/campaigns/CampaignCoverUpload';
 import { useCampaignCoverUpload } from '@/hooks/useCampaignCoverUpload';
 
@@ -101,9 +102,11 @@ export default function CampaignCoverUploadExample() {
                   Image Preview
                 </h3>
                 <div className="rounded-lg overflow-hidden shadow-md">
-                  <img
+                  <Image
                     src={image.url}
                     alt="Campaign cover preview"
+                    width={1200}
+                    height={675}
                     className="w-full h-80 object-cover"
                   />
                 </div>

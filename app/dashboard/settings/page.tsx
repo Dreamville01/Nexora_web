@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useAuthStore } from '@/store/authStore';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -205,9 +206,11 @@ function SettingsPage() {
             <div className="flex items-center gap-4">
               <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center">
                 {profileForm.avatar ? (
-                  <img 
+                  <Image 
                     src={profileForm.avatar} 
-                    alt="Avatar" 
+                    alt="Avatar"
+                    width={80}
+                    height={80}
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (

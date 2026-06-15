@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
@@ -66,7 +66,7 @@ export default function AuditLogsPage() {
   const [selectedLog, setSelectedLog] = useState<AuditLog | null>(null);
 
   // Fetch logs
-  const fetchLogs = async (page = 1) => {
+  const fetchLogs = useCallback(async (page = 1) => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -89,11 +89,11 @@ export default function AuditLogsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters]);
 
   useEffect(() => {
     fetchLogs();
-  }, [filters]);
+  }, [fetchLogs]);
 
   // Handle filter changes with debouncing
   const handleFilterChange = (key: keyof Filters, value: string) => {

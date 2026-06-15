@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { ImageUpload, UploadedImage } from '@/components/ImageUpload';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { ImageGallery } from '@/components/projects/ImageGallery';
@@ -117,10 +118,14 @@ function HookExample() {
       <div className="grid grid-cols-3 gap-4">
         {images.map((image) => (
           <div key={image.id} className="border rounded p-3">
-            <img
+            <Image
               src={image.preview}
               alt={image.file.name}
+              width={0}
+              height={0}
+              sizes="100vw"
               className="w-full h-32 object-cover rounded mb-2"
+              unoptimized
             />
             <p className="text-sm truncate">{image.file.name}</p>
             <p className="text-xs text-gray-500">
@@ -168,10 +173,13 @@ function ProfilePictureExample() {
 
       {profile ? (
         <div className="flex gap-4">
-          <img
+          <Image
             src={profile.preview}
             alt="Profile"
+            width={128}
+            height={128}
             className="w-32 h-32 rounded-full object-cover"
+            unoptimized
           />
           <div>
             <p className="font-medium">{profile.file.name}</p>
@@ -232,10 +240,14 @@ function GalleryExample() {
           <div className="grid grid-cols-4 gap-4">
             {images.map((image) => (
               <div key={image.id} className="relative group">
-                <img
+                <Image
                   src={image.preview}
                   alt="gallery"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
                   className="w-full aspect-square object-cover rounded"
+                  unoptimized
                 />
                 <button
                   onClick={() => removeImage(image.id)}
