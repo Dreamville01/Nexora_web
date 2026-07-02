@@ -74,7 +74,7 @@ export default function Header() {
             <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-base leading-none">O</span>
             </div>
-            <span className="text-lg font-semibold text-foreground">OrbitChain</span>
+            <span className="text-lg font-semibold text-foreground">Nexora</span>
           </Link>
 
           {/* Desktop nav */}
