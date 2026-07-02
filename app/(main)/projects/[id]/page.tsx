@@ -16,13 +16,13 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
   if (!project) {
     return {
-      title: 'Project Not Found | OrbitChain',
+      title: 'Project Not Found | Nexora',
       description: 'The requested project could not be found.',
     };
   }
 
-  const title = `${project.title} | OrbitChain`;
-  const description = project.description?.substring(0, 160) || `Support this ${project.category} project on OrbitChain.`;
+  const title = `${project.title} | Nexora`;
+  const description = project.description?.substring(0, 160) || `Support this ${project.category} project on Nexora.`;
   const imageUrl = project.imageUrl || '/og-image.jpg';
 
   return {
@@ -54,14 +54,14 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
         name: project.title,
         description: project.description,
         image: project.imageUrl,
-        url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://orbitchain.com'}/projects/${params.id}`,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://nexora.com'}/projects/${params.id}`,
         creator: {
           '@type': 'Person',
-          name: project.creator?.name || 'OrbitChain Creator',
+          name: project.creator?.name || 'Nexora Creator',
         },
         provider: {
           '@type': 'Organization',
-          name: 'OrbitChain',
+          name: 'Nexora',
         },
         funding: {
           '@type': 'MonetaryAmount',
@@ -154,7 +154,7 @@ function normalizeProject(payload: ProjectApiPayload, id: string): Project {
     donorCount: payload.donorCount ?? payload.donors ?? 0,
     creator: payload.creator || {
       id: creatorId,
-      name: payload.creatorName || 'OrbitChain Creator',
+      name: payload.creatorName || 'Nexora Creator',
       verified: Boolean(payload.isVerified),
     },
     createdAt,
@@ -227,7 +227,7 @@ function createFallbackProject(id: string): Project | null {
       location: fallbackLocation[index % 4] ?? fallbackLocation[0] ?? 'Remote',
       creator: {
         id: `creator-${index + 1}`,
-        name: fallbackName[index % 4] ?? fallbackName[0] ?? 'OrbitChain Creator',
+        name: fallbackName[index % 4] ?? fallbackName[0] ?? 'Nexora Creator',
         bio: 'Campaign organizer coordinating verified updates, local delivery, and donor reporting.',
         location: fallbackLocation[index % 4] ?? fallbackLocation[0] ?? 'Remote',
         verified: index % 2 === 0,
@@ -281,7 +281,7 @@ function createFallbackProject(id: string): Project | null {
           id: `${id}-update-2`,
           campaignId: id,
           title: 'Campaign kickoff',
-          content: 'The project was reviewed and opened for OrbitChain donations.',
+          content: 'The project was reviewed and opened for Nexora donations.',
           createdAt: new Date(Date.now() - 11 * 86400000).toISOString(),
         },
       ],

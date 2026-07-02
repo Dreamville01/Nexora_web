@@ -13,7 +13,7 @@ const Footer = () => {
               <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-base leading-none">O</span>
               </div>
-              <span className="text-lg font-semibold text-foreground">OrbitChain</span>
+              <span className="text-lg font-semibold text-foreground">Nexora</span>
             </div>
             <p className="text-sm text-muted-foreground">Transparent charitable giving on blockchain</p>
           </div>
@@ -87,7 +87,7 @@ const Footer = () => {
 
         {/* Copyright Section */}
         <div className="mt-8 text-center text-sm text-muted-foreground">
-          © 2026 OrbitChain. All rights reserved.
+          © 2026 Nexora. All rights reserved.
         </div>
       </div>
     </footer>

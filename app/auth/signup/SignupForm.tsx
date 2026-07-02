@@ -118,7 +118,7 @@ const Signup = () => {
               letterSpacing: "-0.01em",
             }}
           >
-            OrbitChain
+            Nexora
           </span>
         </div>
 
