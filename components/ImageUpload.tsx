@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import Image from 'next/image';
 import { clsx } from 'clsx';
-import { Upload, Trash2, AlertCircle, CheckCircle, X } from 'lucide-react';
+import { Upload, Trash2, AlertCircle, CheckCircle, X, Loader2 } from 'lucide-react';
 import {
   validateImageFile,
   validateImageDimensions,
@@ -390,20 +390,33 @@ const ImagePreviewCard: React.FC<ImagePreviewCardProps> = ({
   isUploading,
 }) => {
   const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
     <div className="relative group">
       {/* Image Container */}
       <div className="relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden aspect-square">
         {!imageError ? (
-          <Image
-            src={image.preview}
-            alt="Preview"
-            fill
-            className="object-cover"
-            unoptimized
-            onError={() => setImageError(true)}
-          />
+          <>
+            {/* Placeholder shown while the preview image is loading */}
+            {!imageLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700">
+                <Loader2 className="w-6 h-6 text-gray-400 animate-spin" />
+              </div>
+            )}
+            <Image
+              src={image.preview}
+              alt="Preview"
+              fill
+              className={clsx(
+                'object-cover transition-opacity duration-200',
+                imageLoaded ? 'opacity-100' : 'opacity-0'
+              )}
+              unoptimized
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageError(true)}
+            />
+          </>
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700">
             <AlertCircle className="w-8 h-8 text-gray-400" />

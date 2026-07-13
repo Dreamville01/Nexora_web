@@ -11,9 +11,17 @@ import { authApi } from '@/lib/api/auth';
 
 export default function ProfileDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+  const [avatarLoaded, setAvatarLoaded] = useState(false);
+  const [avatarError, setAvatarError] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { user, logout } = useAuthStore();
+
+  // Reset avatar load/error state whenever the avatar source changes
+  useEffect(() => {
+    setAvatarLoaded(false);
+    setAvatarError(false);
+  }, [user?.avatar]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -119,18 +127,28 @@ export default function ProfileDropdown() {
         aria-haspopup="true"
       >
         {/* User Avatar */}
-        <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-medium">
-          {user?.avatar ? (
+        <div className="relative w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-medium overflow-hidden">
+          {/* Initials placeholder: shown until the avatar image loads, and as a fallback if it fails */}
+          <span
+            className={`transition-opacity duration-200 ${
+              user?.avatar && !avatarError && avatarLoaded ? 'opacity-0' : 'opacity-100'
+            }`}
+          >
+            {user?.name ? getUserInitials(user.name) : 'U'}
+          </span>
+          {user?.avatar && !avatarError && (
             <Image
               src={user.avatar}
               alt={user.name || "User Avatar"}
               width={32}
               height={32}
-              className="w-full h-full rounded-full object-cover"
+              className={`absolute inset-0 w-full h-full rounded-full object-cover transition-opacity duration-200 ${
+                avatarLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
               unoptimized
+              onLoad={() => setAvatarLoaded(true)}
+              onError={() => setAvatarError(true)}
             />
-          ) : (
-            <span>{user?.name ? getUserInitials(user.name) : 'U'}</span>
           )}
         </div>
 
