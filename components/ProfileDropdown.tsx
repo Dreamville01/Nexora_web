@@ -122,6 +122,7 @@ export default function ProfileDropdown() {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        aria-label="User menu"
         className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
         aria-expanded={isOpen}
         aria-haspopup="true"

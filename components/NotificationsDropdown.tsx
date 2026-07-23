@@ -200,6 +200,7 @@ export function NotificationsDropdown({ className }: NotificationsDropdownProps)
                                     }}
                                     className="p-1 rounded hover:bg-gray-200 text-gray-400 hover:text-gray-600"
                                     title="Mark as read"
+                                    aria-label="Mark as read"
                                   >
                                     <Check className="w-3 h-3" />
                                   </button>
@@ -211,6 +212,7 @@ export function NotificationsDropdown({ className }: NotificationsDropdownProps)
                                     onClick={() => handleNotificationClick(notification)}
                                     className="p-1 rounded hover:bg-gray-200 text-gray-400 hover:text-gray-600"
                                     title="View details"
+                                    aria-label="View details"
                                   >
                                     <ExternalLink className="w-3 h-3" />
                                   </Link>
